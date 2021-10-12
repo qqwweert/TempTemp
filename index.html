@@ -105,7 +105,13 @@
                     [this.date]: Object.fromEntries(people.map(i => [i, {}]))
                 };
                 Object.keys(table).forEach(date => {
+                    if (date in this.table) {
+                        this.table[date] = {};
+                    };
                     Object.keys(table[date]).forEach(i => {
+                        if (i in this.table[date]) {
+                            this.table[date][i] = {};
+                        };
                         Object.keys(table[date][i]).forEach(j => {
                             this.table[date][i][j] = table[date][i][j];
                         });
