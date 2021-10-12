@@ -2,10 +2,10 @@
     "short_name": "Weather",
     "name": "Weather: Do I need an umbrella?",
     "display": "standalone",
-    "start_url": "/TempTemp/",
+    "start_url": "",
     "icons": [
       {
-        "src": "/maskable_icon_x192.png",
+        "src": "maskable_icon_x192.png",
         "type": "image/png",
         "sizes": "192x192"
       }
