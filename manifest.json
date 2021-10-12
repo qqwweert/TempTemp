@@ -1,6 +1,6 @@
 {
-    "short_name": "Weather",
-    "name": "Weather: Do I need an umbrella?",
+    "short_name": "MySchedule",
+    "name": "MySchedule",
     "display": "standalone",
     "start_url": "",
     "icons": [
@@ -8,6 +8,12 @@
         "src": "maskable_icon_x192.png",
         "type": "image/png",
         "sizes": "192x192"
+      }
+    ],
+    "shortcuts" : [
+      {
+        "name": "MySchedule1",
+        "url": ""
       }
     ],
     "background_color": "#ffffff",
