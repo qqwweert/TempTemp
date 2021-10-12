@@ -2,7 +2,7 @@
     "short_name": "MySchedule",
     "name": "MySchedule",
     "display": "standalone",
-    "start_url": "",
+    "start_url": "/TempTemp/",
     "icons": [
       {
         "src": "maskable_icon_x192.png",
@@ -13,7 +13,7 @@
     "shortcuts" : [
       {
         "name": "MySchedule1",
-        "url": ""
+        "url": "/TempTemp/"
       }
     ],
     "background_color": "#ffffff",
