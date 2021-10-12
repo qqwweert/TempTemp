@@ -6,81 +6,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="maskable_icon_x192.png">
 </head>
-<body id="app">
-    <div class="modal fade" id="other-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <label class="mb-3 w-100">
-                        <span class="form-label">Текущая дата</span>
-                        <input class="form-control" type="date" v-model.lazy=date></input>
-                    </label>
-                    <h5>Выгрузка и загрузка данных</h5>
-                    <button type="button" class="btn btn-primary me-3" @click="download">Скачать</button>
-                    <button type="button" class="btn btn-primary" @click="upload">Загрузить</button>
-                    <h5>Измение данных (может их стереть)</h5>
-                    <label class="mb-3 w-100">
-                        <span class="form-label">Список людей (одна строка - один человек)</span>
-                        <textarea class="form-control" v-model.lazy="peopleText"></textarea>
-                    </label>
-                    <label class="mb-3 w-100">
-                        <span class="form-label">Список действий (одна строка - одино действие)</span>
-                        <textarea class="form-control" v-model.lazy="actionsText"></textarea>
-                    </label>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="other-action-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" v-if="current">
-                    <textarea class="form-control" v-model="table[date][current].$"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+<body>
+    <main id="app">
+        <div class="modal fade" id="other-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label class="mb-3 w-100">
+                            <span class="form-label">Текущая дата</span>
+                            <input class="form-control" type="date" v-model.lazy=date></input>
+                        </label>
+                        <h5>Выгрузка и загрузка данных</h5>
+                        <button type="button" class="btn btn-primary me-3" @click="download">Скачать</button>
+                        <button type="button" class="btn btn-primary" @click="upload">Загрузить</button>
+                        <h5>Измение данных (может их стереть)</h5>
+                        <label class="mb-3 w-100">
+                            <span class="form-label">Список людей (одна строка - один человек)</span>
+                            <textarea class="form-control" v-model.lazy="peopleText"></textarea>
+                        </label>
+                        <label class="mb-3 w-100">
+                            <span class="form-label">Список действий (одна строка - одино действие)</span>
+                            <textarea class="form-control" v-model.lazy="actionsText"></textarea>
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>    
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="modal fade" id="other-action-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" v-if="current">
+                        <textarea class="form-control" v-model="table[date][current].$"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+            <a class="navbar-brand" href="#">MyCommunication</a>
+            <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="#other-modal">Other</a>
+            </div>
+        </nav>
         <div class="container">
-          <a class="navbar-brand" href="#">MyCommunication</a>
-          <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="#other-modal">Other</a>
-        </div>
-    </nav>
-    <div class="container">
-        <table class="table text-center" v-if="people.length">
-            <tr>
-                <th></th>
-                <th v-for="i in actions" v-text="i"></th>
-                <th>Ещё что-то</th>
-            </tr>
-            <tr v-for="i in people">
-                <td v-text="i"></td>  
-                <td v-for="j in actions">
-                    <input type="checkbox" v-model="table[date][i][j]">
-                </td>
-                <td>
-                    <button class="btn btn-primary" @click="current = i" data-bs-toggle="modal" data-bs-target="#other-action-modal">+</button>
-                </td>          
-            </tr>
-        </table>
-    </div>
+            <table class="table text-center" v-if="people.length">
+                <tr>
+                    <th></th>
+                    <th v-for="i in actions" v-text="i"></th>
+                    <th>Ещё что-то</th>
+                </tr>
+                <tr v-for="i in people">
+                    <td v-text="i"></td>  
+                    <td v-for="j in actions">
+                        <input type="checkbox" v-model="table[date][i][j]">
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @click="current = i" data-bs-toggle="modal" data-bs-target="#other-action-modal">+</button>
+                    </td>          
+                </tr>
+            </table>
+        </div>        
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.10/dist/vue.global.min.js"></script>
+    <script>
+        const vue = Vue.createApp({
+        data() {
+            const date = new Date().toISOString().slice(0, 10);
+            const data = JSON.parse(localStorage["data"] || JSON.stringify({
+                people: [], actions: [], table: {} }));
+            people = data.people;
+            actions = data.actions;
+            table = data.table;
+            table[date] = table[date] || Object.fromEntries(
+                people.map(i => [i, {$: ""}]));
+            return { people, actions, table, date, current: null };
+        },
+        methods: {
+            updateData() {
+                const people = this.people;
+                this.table = {
+                    [this.date]: Object.fromEntries(people.map(i => [i, {$: ""}]))
+                };
+            },
+            saveData() {
+                localStorage["data"] = JSON.stringify({
+                    people: this.people,
+                    actions: this.actions,
+                    table: this.table,
+                });
+            },
+            download() {
+                const blob = new Blob([localStorage["data"]]);
+                const a = document.createElement("a");
+                a.setAttribute("download", "data.json");
+                a.setAttribute("href", URL.createObjectURL(blob)); 
+                a.click();
+            },
+            async upload() {
+                const input = document.createElement("input");
+                input.setAttribute("type", "file");
+                input.click();
+                await new Promise(r => { input.onchange = () => r() });
+                localStorage["data"] = await input.files[0].text();
+                location.reload();
+            },
+        },
+        computed: {
+            peopleText: {
+                get() {
+                    return this.people.join("\n");
+                },
+                set(val) {
+                    this.people = val.split("\n");
+                    this.updateData();
+                },
+            },
+            actionsText: {
+                get() {
+                    return this.actions.join("\n");
+                },
+                set(val) {
+                    this.actions = val.split("\n");
+                    this.updateData();
+                },
+            },
+        },
+        watch: {
+            people: 'saveData',
+            actions: 'saveData',
+            table: { handler: 'saveData', deep: true },
+            date(date) {
+                this.table[date] = this.table[date] || Object.fromEntries(
+                    this.people.map(i => [i, {$: ""}]));
+            },
+        },
+    }).mount("#app");;
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <script>
+        navigator.serviceWorker.register('/sw.js')//{ scope: '/'});
+    </script>   
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue@3.2.10/dist/vue.global.min.js"></script>
-<script src="./index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 </html>
