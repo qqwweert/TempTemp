@@ -99,10 +99,16 @@
         },
         methods: {
             updateData() {
+                const table = this.table;
                 const people = this.people;
                 this.table = {
                     [this.date]: Object.fromEntries(people.map(i => [i, {}]))
                 };
+                Object.all(data).forEach(date => {
+                    Object.all(data[date]).forEach(i => {
+                        this.table[date][i] = table[date][i];
+                    });
+                });
             },
             saveData() {
                 localStorage["data"] = JSON.stringify({
