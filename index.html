@@ -106,7 +106,9 @@
                 };
                 Object.keys(table).forEach(date => {
                     Object.keys(table[date]).forEach(i => {
-                        this.table[date][i] = table[date][i];
+                        Object.keys(table[date][j]).forEach(j => {
+                            this.table[date][i][j] = table[date][i][j];
+                        });
                     });
                 });
             },
