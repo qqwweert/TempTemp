@@ -8,6 +8,23 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="manifest" href="/manifest.json">
     <link rel="shortcut icon" href="maskable_icon_x192.png">
+    <style>
+        .table {
+            vertical-align: middle;
+            font-size: 13px;
+        }
+        tr:first-child {
+            padding: 0;
+            font-size: inherit;
+            font-weight: bolder;
+            position: sticky;
+            top: 0px;
+            background: #dee2e6;
+        }
+        .bold {
+            font-weight: bolder;
+        }
+    </style>
 </head>
 <body>
     <main id="app">
@@ -28,13 +45,25 @@
                         <button type="button" class="btn btn-primary" @click="upload">Загрузить</button>
                         <h5>Измение данных (может их стереть)</h5>
                         <label class="mb-3 w-100">
-                            <span class="form-label">Список людей (одна строка - один человек)</span>
+                            <span class="form-label">Список объектов (одна строка - один объект)</span>
                             <textarea class="form-control" v-model.lazy="peopleText"></textarea>
                         </label>
                         <label class="mb-3 w-100">
                             <span class="form-label">Список действий (одна строка - одино действие)</span>
                             <textarea class="form-control" v-model.lazy="actionsText"></textarea>
                         </label>
+                        <table class="table text-center">
+                            <tr>
+                                <th></th>
+                                <th>Скрыт</th>
+                            </tr>
+                            <tr v-for="i in people">
+                                <td v-text="i"></td>  
+                                <td>
+                                    <input type="checkbox" v-model="table[date][i].$hidden">
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -42,48 +71,20 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="other-action-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" v-if="current">
-                        <textarea class="form-control" v-model="table[date][current].$"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>    
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-            <a class="navbar-brand" href="#">MyCommunication</a>
-            <a class="btn btn-link" href="#" data-bs-toggle="modal" data-bs-target="#other-modal">Other</a>
-            </div>
-        </nav>
-        <div class="container">
-            <table class="table text-center" v-if="people.length">
-                <tr>
-                    <th></th>
-                    <th v-for="i in actions" v-text="i"></th>
-                    <th>Ещё что-то</th>
-                </tr>
-                <tr v-for="i in people">
-                    <td v-text="i"></td>  
-                    <td v-for="j in actions">
-                        <input type="checkbox" v-model="table[date][i][j]">
-                    </td>
-                    <td>
-                        <button class="btn btn-primary" @click="current = i" data-bs-toggle="modal" data-bs-target="#other-action-modal">+</button>
-                    </td>          
-                </tr>
-            </table>
-        </div>        
+        <table class="table text-center">
+            <tr data-bs-toggle="modal" data-bs-target="#other-modal">
+                <th>Настройки</th>
+                <th v-for="i in actions" v-text="i"></th>
+            </tr>
+            <tr v-for="i in people" v-show="!table[date][i].$hidden" :key="i">
+                <td v-text="i" class="bold"></td>  
+                <td v-for="j in actions">
+                    <input type="checkbox" v-model="table[date][i][j]">
+                </td>
+            </tr>
+        </table>  
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.10/dist/vue.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.10/dist/vue.global.prod.js"></script>
     <script>
         const vue = Vue.createApp({
         data() {
@@ -93,15 +94,14 @@
             people = data.people;
             actions = data.actions;
             table = data.table;
-            table[date] = table[date] || Object.fromEntries(
-                people.map(i => [i, {$: ""}]));
-            return { people, actions, table, date, current: null };
+            table[date] = table[date] || Object.fromEntries(people.map(i => [i, {}]));
+            return { people, actions, table, date };
         },
         methods: {
             updateData() {
                 const people = this.people;
                 this.table = {
-                    [this.date]: Object.fromEntries(people.map(i => [i, {$: ""}]))
+                    [this.date]: Object.fromEntries(people.map(i => [i, {}]))
                 };
             },
             saveData() {
@@ -153,7 +153,7 @@
             table: { handler: 'saveData', deep: true },
             date(date) {
                 this.table[date] = this.table[date] || Object.fromEntries(
-                    this.people.map(i => [i, {$: ""}]));
+                    this.people.map(i => [i, {}]));
             },
         },
     }).mount("#app");;
@@ -162,6 +162,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     <script>
         navigator.serviceWorker.register('/sw.js')//{ scope: '/'});
-    </script>   
+    </script>      
 </body>
 </html>
