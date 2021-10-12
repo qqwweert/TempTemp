@@ -104,8 +104,8 @@
                 this.table = {
                     [this.date]: Object.fromEntries(people.map(i => [i, {}]))
                 };
-                Object.all(data).forEach(date => {
-                    Object.all(data[date]).forEach(i => {
+                Object.all(table).forEach(date => {
+                    Object.all(table[date]).forEach(i => {
                         this.table[date][i] = table[date][i];
                     });
                 });
