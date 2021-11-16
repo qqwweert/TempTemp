@@ -10,12 +10,6 @@
         "sizes": "192x192"
       }
     ],
-    "shortcuts" : [
-      {
-        "name": "MySchedule1",
-        "url": "/TempTemp/index.html"
-      }
-    ],
     "background_color": "#ffffff",
     "scope": "/TempTemp/"
 }
