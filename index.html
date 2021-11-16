@@ -94,7 +94,7 @@
             people = data.people;
             actions = data.actions;
             table = data.table;
-            table[date] = table[date] || Object.fromEntries(people.map(i => [i, {}]));
+            table[date] = table[date] || Object.fromEntries(people.map(i => [i, {$hidden: false}]));
             return { people, actions, table, date };
         },
         methods: {
@@ -102,7 +102,7 @@
                 const table = this.table;
                 const people = this.people;
                 this.table = {
-                    [this.date]: Object.fromEntries(people.map(i => [i, {}]))
+                    [this.date]: Object.fromEntries(people.map(i => [i, {$hidden: false}]))
                 };
                 Object.keys(table).forEach(date => {
                     if (date in this.table) {
@@ -110,7 +110,7 @@
                     };
                     Object.keys(table[date]).forEach(i => {
                         if (i in this.table[date]) {
-                            this.table[date][i] = {};
+                            this.table[date][i] = {$hidden: false};
                         };
                         Object.keys(table[date][i]).forEach(j => {
                             this.table[date][i][j] = table[date][i][j];
@@ -167,7 +167,7 @@
             table: { handler: 'saveData', deep: true },
             date(date) {
                 this.table[date] = this.table[date] || Object.fromEntries(
-                    this.people.map(i => [i, {}]));
+                    this.people.map(i => [i, {$hidden: false}]));
             },
         },
     }).mount("#app");;
