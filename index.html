@@ -52,18 +52,6 @@
                             <span class="form-label">Список действий (одна строка - одино действие)</span>
                             <textarea class="form-control" v-model.lazy="actionsText"></textarea>
                         </label>
-                        <table class="table text-center">
-                            <tr>
-                                <th></th>
-                                <th>Скрыт</th>
-                            </tr>
-                            <tr v-for="i in people">
-                                <td v-text="i"></td>  
-                                <td>
-                                    <input type="checkbox" v-model="table[date][i].$hidden">
-                                </td>
-                            </tr>
-                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -76,7 +64,7 @@
                 <th>Настройки</th>
                 <th v-for="i in actions" v-text="i"></th>
             </tr>
-            <tr v-for="i in people" v-show="!table[date][i].$hidden" :key="i">
+            <tr v-for="i in people" :key="i">
                 <td v-text="i" class="bold"></td>  
                 <td v-for="j in actions">
                     <input type="checkbox" v-model="table[date][i][j]">
@@ -94,7 +82,7 @@
             people = data.people;
             actions = data.actions;
             table = data.table;
-            table[date] = table[date] || Object.fromEntries(people.map(i => [i, {$hidden: false}]));
+            table[date] = table[date] || Object.fromEntries(people.map(i => [i, {}]));
             return { people, actions, table, date };
         },
         methods: {
@@ -102,7 +90,7 @@
                 const table = this.table;
                 const people = this.people;
                 this.table = {
-                    [this.date]: Object.fromEntries(people.map(i => [i, {$hidden: false}]))
+                    [this.date]: Object.fromEntries(people.map(i => [i, {}]))
                 };
                 Object.keys(table).forEach(date => {
                     if (date in this.table) {
@@ -110,7 +98,7 @@
                     };
                     Object.keys(table[date]).forEach(i => {
                         if (i in this.table[date]) {
-                            this.table[date][i] = {$hidden: false};
+                            this.table[date][i] = {};
                         };
                         Object.keys(table[date][i]).forEach(j => {
                             this.table[date][i][j] = table[date][i][j];
@@ -167,7 +155,7 @@
             table: { handler: 'saveData', deep: true },
             date(date) {
                 this.table[date] = this.table[date] || Object.fromEntries(
-                    this.people.map(i => [i, {$hidden: false}]));
+                    this.people.map(i => [i, {}]));
             },
         },
     }).mount("#app");;
